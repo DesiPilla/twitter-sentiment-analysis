@@ -1,3 +1,11 @@
+# Purpose
+
+This is the final project for the course Mathematical Techniques in Data Science (MATH 637) at the University of Delaware. The course instructor is Dr. Dominique Guillot. The team members associated with this project are Olivia Mwangi, Desiderio Pilla, and Akshaya Ramesh, who are all students in the Master of Science in Data Science (MSDS) program at UD.
+
+# Problem Statement
+
+The goal of this project is to create a machine learning model that will be able to classify tweets from Twitter based on their sentiment. This scope of this problem has been reduced to classifying a tweet as either "negative", "neutral", or "positive". Once a model has been created, trained, and validated, we intend to use it on real-time and historical tweets to collect aggregated sentiment scores for varying topics and subjects to create time series charts.
+
 # Overall Methodology
 
 First, we will use `CountVectorizer` to create a dictionary where the keys are every word in the training set and the values are the frequencies of each word.
@@ -28,7 +36,7 @@ Finally, we will use `MultinomialNB` to train the tf-idf vectors with a Naive-Ba
 model = MultinomialNB().fit(messages_tdidf)
 ```
 ---
-</br>
+
 
 ## Streamlined Methodology
 
@@ -49,8 +57,6 @@ pipeline = Pipeline([
 The first element of each tuple passed into the `Pipeline` is the name of the estimator. The second element of each tuple is the estimator itself, instantiated with any non-changing arguments.
 
 ---
-
-</br>
 
 
 ## Cross Validation
