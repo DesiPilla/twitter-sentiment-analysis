@@ -21,7 +21,7 @@ These two tweets clearly fall into the positive and negative, respectively, sent
 
 > I am indifferent about the world.
 
-This tweet lies somewhere in between the previous two. Yet, rather than labeling it as "neutral", one could argue that this in fact illicits a negative sentiment, as people who don't view the world positively must view it negatively. Another non-trivial tweet is:
+This tweet lies somewhere in between the previous two. Yet, rather than labeling it as "neutral", one could argue that this in fact illicits a negative sentiment, as it is sad for someone to feel indifferent about the world. In any case, this classification is much less trivial to assign. Another non-trivial tweet is:
 
 > The S&P 500 was down 300 points on Thursday.
 
