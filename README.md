@@ -27,7 +27,7 @@ This tweet lies somewhere in between the previous two. Yet, rather than labeling
 
 This would come as bad news for investors, but happy news for short-sellers. But broadly, this tweet doesn't seem to have any emotion, but rather only delivers a fact. Lastly, consider one more tweet:
 
-> I love candy, but it has too much sugar in it!
+> I love candy, but it has too much sugar in it.
 
 This person begins by saying something positive, but then ends it negatively. Overall, it is unclear whether this is a net-positive or net-negative tweet. It is also not as bland as the third example tweet; this sentence exhibits both positive and negative sentiments in one. The point of these examples is to show that sentiment analysis is not an exact science. Furthermore, not all sentiments are as easy to distinguish. A "neutral" label is much more subjective and poorly-defined that a "positive" or "negative" label.
 
