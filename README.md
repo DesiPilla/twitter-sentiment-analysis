@@ -4,7 +4,34 @@ This is the final project for the course Mathematical Techniques in Data Science
 
 # Problem Statement
 
-The goal of this project is to create a machine learning model that will be able to classify tweets from Twitter based on their sentiment. This scope of this problem has been reduced to classifying a tweet as either "negative", "neutral", or "positive". Once a model has been created, trained, and validated, we intend to use it on real-time and historical tweets to collect aggregated sentiment scores for varying topics and subjects to create time series charts.
+On Twitter, users all over the world can express their opinion on any topic in a matter of seconds. By searching keywords or hashtags, anyone can scroll through a feed of content relating to any interest they like. The rise of social media has seen an uptick in polarizing content on the web, as it has become extraordinarily easy to share one's views. 
+
+An important field of data science is sentiment analysis, which uses natural language processing to extract certain emotions of feelings from text. The main goal of this project is to build and train a model that can detect the sentiment of a tweet. For simplicity, this model limit its scope to label all tweets into one of these three categories:
+ * negative
+ * neutral
+ * positive
+
+Though there are many more specific sentiments that would need to be learned in order to obtain a clearer picture of a tweet's intentions, we will limit our model to learning these three classifications. However, a perfect model is nearly impossible to create. The reason is because sentiment is highly subjective. Anywhere from 10% - 30% of tweets would cause a debate amongst humans as to which category they fall into. To illustrate this, consider the following two tweets:
+
+> I love the world!
+>
+> I hate the world.
+
+These two tweets clearly fall into the positive and negative, respectively, sentiment categories. However, consider this tweet:
+
+> I am indifferent about the world.
+
+This tweet lies somewhere in between the previous two. Yet, rather than labeling it as "neutral", one could argue that this in fact illicits a negative sentiment, as people who don't view the world positively must view it negatively. Another non-trivial tweet is:
+
+> The S&P 500 was down 300 points on Thursday.
+
+This would come as bad news for investors, but happy news for short-sellers. But broadly, this tweet doesn't seem to have any emotion, but rather only delivers a fact. Lastly, consider one more tweet:
+
+> I love candy, but it has too much sugar in it!
+
+This person begins by saying something positive, but then ends it negatively. Overall, it is unclear whether this is a net-positive or net-negative tweet. It is also not as bland as the third example tweet; this sentence exhibits both positive and negative sentiments in one. The point of these examples is to show that sentiment analysis is not an exact science. Furthermore, not all sentiments are as easy to distinguish. A "neutral" label is much more subjective and poorly-defined that a "positive" or "negative" label.
+
+In this project, we aim to create a machine learning model that is able to accurately classify the sentiment of a tweet, with the expectation that the "true" accuracy of the model will be limited by the subjective nature of this application. Once a model has been created, trained, and validated, we intend to use it on real-time and historical tweets to collect aggregated sentiment scores for varying topics and subjects to create time series charts.
 
 # Overall Methodology
 
