@@ -83,6 +83,17 @@ pipeline = Pipeline([
 ```
 The first element of each tuple passed into the `Pipeline` is the name of the estimator. The second element of each tuple is the estimator itself, instantiated with any non-changing arguments.
 
+Furthermore, the `TfidfVectorizer` is a module which is equivalent to `Countvectorizer` followed by `TfidfTransformer`. This will convert raw text into a tf-idf matrix. The new Pipeline would look like
+
+```
+pipeline = Pipeline([
+        ('tfidf', TfidfVectorizer(lowercase=True, 
+                                strip_accents='ascii',
+                                stop_words='english')),
+        ('classifier', MultinomialNB()),
+        ])
+```
+
 ---
 
 
@@ -94,7 +105,7 @@ Tthe `parameters` dictionary contains the set of hyperparameters to loop through
 ```
 parameters = {estimatorName__argumentName : [list_of_hyperparameters]}
 
-parameters = {'bow__ngram_range': [(1, 1), (1, 2)],
+parameters = {'tfidf__ngram_range': [(1, 1), (1, 2)],
               'tfidf__norm' : ['l1', 'l2'],
               'classifier__fit_prior' : [True, False],
               'classifier__alpha' : np.arange(0.1, 1.5, 16)
@@ -107,16 +118,14 @@ grid.fit(X, y)
 ```
 
 ---
-
 ## Testing Multiple Classifiers
 
 One last improvement we can make is to add a `CLFSwitcher` function that will allow us to use different classifier methods in our `Pipeline` process. This object needs to extend the `fit()`, `predict()`, `predict_proba()`, and `score()` methods of the classifier to be used. To implement this change, we need to make slight adjustments to our `Pipeline` process and parameters list.
 ```
 pipeline = Pipeline([
-        ('bow', CountVectorizer(lowercase=True, 
+        ('tfidf', TfidfVectorizer(lowercase=True, 
                                 strip_accents='ascii',
                                 stop_words='english')),
-        ('tfidf', TfidfTransformer()),
         ('clf', CLFSwitcher()),           # Change this estimator to the CLFSwitcher           
         ])
 ```
@@ -125,13 +134,13 @@ In our parameters list, we create multiple dictionaries -- one for each classifi
 ```
  parameters = [
             {'clf__estimator': [MultinomialNB()],
-             'bow__ngram_range': [(1, 1), (1, 2)],
+             'tfidf__ngram_range': [(1, 1), (1, 2)],
              'tfidf__norm' : ['l1', 'l2'],
              'clf__estimator__fit_prior' : [True, False],
              'clf__estimator__alpha' : np.arange(0.1, 1.5, 16)
             },
             {'clf__estimator': [SGDClassifier(random_state=637, n_jobs=-1)],
-             'bow__ngram_range': [(1, 1), (1, 2)],
+             'tfidf__ngram_range': [(1, 1), (1, 2)],
              'tfidf__norm' : ['l1', 'l2'],
              'clf__estimator__loss': ['hinge', 'log', 'modified_huber'],
              'clf__estimator__penalty': ['l1', 'l2', 'elasticnet']
