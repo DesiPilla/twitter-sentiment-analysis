@@ -88,7 +88,7 @@ pipeline = Pipeline([
 ```
 The first element of each tuple passed into the `Pipeline` is the name of the estimator. The second element of each tuple is the estimator itself, instantiated with any non-changing arguments.
 
-Furthermore, the `TfidfVectorizer` is a module which is equivalent to `Countvectorizer` followed by `TfidfTransformer`. This will convert raw text into a tf-idf matrix. The new Pipeline would look like
+Furthermore, the `TfidfVectorizer` is a module which is equivalent to `CountVectorizer` followed by `TfidfTransformer`. This will convert raw text into a tf-idf matrix. The new Pipeline would look like
 
 ```
 pipeline = Pipeline([
