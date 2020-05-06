@@ -104,7 +104,7 @@ pipeline = Pipeline([
 
 ## Cross Validation
 
-The benefit of using the `Pipeline` approach is that it allows us to apply cross validation on all three of our estimators at once. Using `GridSearchCV`, we are able to create models that cycle through a given set of hyperparamaters. 
+The benefit of using the `Pipeline` approach is that it allows us to apply cross validation on all three of our estimators at once. Using `GridSearchCV`, we are able to create models that cycle through a given set of hyperparameters. 
 
 The `parameters` dictionary contains the set of hyperparameters to loop through. In our case, the hyperparameters of our model are the arguments that are passed into each estimator. The parameters dictionary is created using the following format:
 ```
