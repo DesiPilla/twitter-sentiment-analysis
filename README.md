@@ -106,7 +106,7 @@ This entire process can be further streamlined by using the ```Pipeline object``
 
 ```
 pipeline = Pipeline([
-        ('bow', TfidfVectorizer(lowercase=True, 
+        ('tfidf', TfidfVectorizer(lowercase=True, 
                                 strip_accents='ascii',
                                 stop_words='english')),
         ('classifier', MultinomialNB()),
