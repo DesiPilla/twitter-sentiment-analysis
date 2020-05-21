@@ -268,8 +268,16 @@ We also included some broad search terms relating to the effects and response to
 
 Another interesting application of this model was to compare the aggregate sentiment scores of key politicians in the United States government. Table 4 highlights the scores of ranking members in each political party.
 
-
-(table 4)
+|Search term|Agg. Score (excluding retweets)|Agg. Score (including retweets)
+|--|--|--|
+|(Donald) Trump|1%|6%|
+|(Joe) Biden|-3%|9%|
+|(Nancy) Pelosi|-43%|-23%|
+|Mitch McConnell|2%|1%|
+|(Barack) Obama|19%|28%|
+|Republicans|-4%|4%|
+|Democrats|-3%|0%|
+**Table 4:** This table shows the aggregate sentiment scores for various high ranking government officials. Scores are given on a scale from -100% to +100%.
 
 This search first points out a peculiar phenomenon. For each term, roughly 2,000 tweets were collected. The first 1,000 tweets are all unique; i.e., all retweets were excluded. The second 1,000 tweets *did* contain retweets and were thus not all unique. It is noteworthy that for nearly all search terms, the aggregated sentiment score was higher for the collection of tweets that contained retweets. This would suggest that Twitter users tend to retweet positive opinions more so than negative ones.
 
