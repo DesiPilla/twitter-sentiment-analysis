@@ -150,7 +150,7 @@ pipeline = Pipeline([
         ])
 ```
 
-In our parameters list, we create multiple dictionaries -- one for each classifier. For two classifiers, the parameters list would look like
+This is very helpful, because it allows us to not only pass in different estimators as a hyperparameter, but also because each estimator has unique hyperparameters of its own. The hyperparameters of a Naive Bayes classifier are different from those of a Support Vector classifier. With this wrapper class, we can pass in multiple estimators, as well as their unique parameters, to `GridSearchCV` when tuning our model. In our parameters list, we create multiple dictionaries -- one for each classifier. For two classifiers, the parameters list would look like
 ```
  parameters = [
             {'clf__estimator': [MultinomialNB()],
@@ -176,4 +176,7 @@ For this project, we will be cross validating with the following classifiers:
  * Logistic Regression
 
 By cross validating among each of these classifiers (as well as cross validating among the hyperparameters of each estimator) we will be able to achieve the best model possible for our training data.
-</br>
+
+---
+
+
