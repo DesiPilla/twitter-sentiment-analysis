@@ -89,6 +89,7 @@ messages_tfidf = tfidf_transformer.transform(bow_matrix)
 The following figure gives a visual representation of how these modules manipulate the data to prepare it for a classical estimator.
 
 ![explanation of tfidf vectorizer](figures/tfidfvectorizer_explain.png)
+**Figure 1:** The above figure shows how `CountVectorizer` and `TfidfTransformer` convert a collection of words into a bag-of-words tf-idf matrix.
 
 Finally, we will use `MultinomialNB` to train the tf-idf vectors with a Naive-Bayes classifier. This will be the final model that is used to classify tweet sentiment.
 ```
@@ -179,4 +180,18 @@ By cross validating among each of these classifiers (as well as cross validating
 
 ---
 
+# Results
 
+Before exploring the best model further, let us unpack the performance of each estimator tested. As mentioned, the SGD model had the best performance. It is important to note that models were compared by their accuracy on predicting individual tweets. A model’s ability to predict aggregated sentiment scores were not considered when selecting hyperparameters. As seen in Figure 2, the Support Vector Classifier (SVC) had a very similar performance to the SGD model, with an accuracy of 75.69%. However, this model took over 8 times as long to train (Figure 3). When training a single model, this is only a couple of seconds, but there were many different models created during cross validation when tuning the hyperparameters, making this difference much more noticeable.
+
+The Naive Bayes estimator produced the third best results, with a cross validation accuracy of 74.14%. Unlike the SVC, this model computed roughly 20% quicker than the SGD model. The fastest estimator, the Perceptron, was also the worst performer. However, it is still noteworthy that the Perceptron was able to classify tweets with 70% accuracy, which is a decent score. The Random Forest model was the most computationally expensive model, yet fell in the middle of the pack in terms of accuracy.
+
+![model performance for each estimator (by accuracy)](figures/estimator_performance.png)
+**Figure 2:** This bar chart displays the cross validation accuracy of the *best* model for each estimator. Note that a different number of models were tested for each estimator, depending on the number of hyperparameters that were tuned. The above plot only displays the best accuracy, not the average accuracy.
+
+![model performance on each estimator (by computational time)](figures/estimator_time.png)
+**Figure 3:** This bar chart displays the computing time for the *best* model of each estimator, as defined in Figure 2. 
+
+Across all models, a total of 132 hyperparameter combinations were tested. Including 10-fold cross validation on each permutation, this comes out to 1,320 models. This took roughly 7.5 minutes to run using Google Colab’s servers. Brief testing on other hardware showed signs that it may take much longer elsewhere. Appendix A details the hyperparameter values tested for each object in the `Pipeline`.
+
+Overall, the model had very strong results. During cross-validation, the training set is split into multiple *folds*. The model is trained on all but one of those folds, and tested on the remaining fold. This yields the *cross validation accuracy* for classifying individual tweets. The best model utilized Stochastic Gradient Descent (SGD) as its estimator, and was able to achieve a cross validation accuracy of 75.99% (Table 1). We define the *test set accuracy* as the accuracy on tweets that have never before been seen by the model. These tweets were held out entirely during the model training and selection process. The test accuracy of the best model was 77.94%. These are exceptionally high values, considering that nearly 10 - 30% of all tweets have arbitrary sentiments. Any accuracy that is much higher would raise red flags as to whether this model is overfitting the noise in the training set.
