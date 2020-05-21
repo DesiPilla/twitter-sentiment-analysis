@@ -226,3 +226,34 @@ where T is a collection of tweets and S is a function that returns the sentiment
 Lastly, we built in the ability to generate word clouds of any text into this model. Users can either create a word cloud of the entire sample, or of only one sentiment. As sentiments are not known ahead of time for most tweet collections, our model will first predict the sentiment of each tweet, and then plot the most important words; here, *important* means words with the largerd tf-idf weight. By observing the word clouds, one can see which are the most important words being used to describe a topic in a specific context. For example, Figure 6 displays the word clouds generated from the training data.
 ![word clouds for training data](figures/wc_train_all3.png)
 **Figure 6:** The above word clouds show the most important words or phrases for classifying each sentiment (*negative*, *neutral*, *positive*, from left to right).
+
+---
+
+# Discussion
+
+From the results discussed above, we can gain confidence to apply this model to real world tweets and see what kind of sentiment information we can glean. Using Twitter’s API, we searched 1,100 tweets relating to the term love and to the term hate. We chose these as benchmark cases. One would assume that most of the tweets containing the word “love” would be positive, and that the opposite would hold true for the term “hate”. Our model assigned an aggregate sentiment score of +86% and -85% to the two groups, respectively. This is good, as it shows the predictions are in line with our expectation.
+
+We then broadened our application to terms where there is no prior knowledge as to what sentiment scores *should* be. We searched 1,079 tweets relating to the term “coronavirus” and examined the predictions made by the model. The aggregate sentiment score was -3%. Remember, the aggregate sentiment scores are on a scale from -100% to +100%, so this score is almost exactly neutral. We found this to be the case for most subject terms. By looking at specific tweets, the reason why becomes more clear.
+```
+3 graphs and 2 maps about jobs and teleworking during the coronavirus (link)
+```
+This tweet links to an article, but short of reading the article and interpreting the mentioned graphs and maps, this tweet appears to be neither negative nor positive, and thus neutral. Our model concluded the same thing.
+```
+waiting for my coronavirus test results is somehow less stressful than waiting for my 202 grade
+```
+This tweet is highly subjective. The student is awaiting test results for a coronavirus test and says it is “not as stressful” as waiting for his term grade. While the first half of the tweet seems positive, the second half seems negative. It is tweets like these that make up most of the responses on Twitter, making it extremely difficult for even humans to agree on a classification. Given that the tweet is not particularly negative nor positive, the model defaults to a neutral designation. There are many more examples of these, yet there are the first two results in the query.
+
+By examining the word cloud (Figure 7) for the entire collection (not just a single sentiment), we can see that the most relevant terms used in tweets include 
+* Iowa
+* (Iowa) Governor (Kim) Reynolds
+* Warning
+* Health
+
+These terms can provide insight into what the public is focusing on when they think of the coronavirus.
+![coronavirus word cloud](figures/wc_corona.png)
+**Figure 7:** This word cloud shows the most important terms related to the entire “coronavirus” collection. They are not specific to one sentiment.
+
+We also included some broad search terms relating to the effects and response to the pandemic (Table 3). With regards to reopening, referring to ending statewide lockdowns across the country, users fall more on the negative side. Yet, public sentiment relating to the economy was much more positive. This is interesting, as the recent decline in economy as a whole was strongly related to the lockdowns taking place. The term “school” was included because many schools and universities across the nation were closed due to the outbreak. The timing of the query also likely boosted sentiment scores, as many semesters have just ended or are about to end. The last two terms were chosen to try and capture the public’s views on the future. The term “summer” was chosen to represent a short-term outlook on the future, while the term “future” is to represent a long-term outlook. Interestingly, users’ short-term outlook is quite bleak, yet their long term optimism is greater. Note that these terms do not pull tweets that necessarily relate to the coronavirus.
+
+(table 3)
+
