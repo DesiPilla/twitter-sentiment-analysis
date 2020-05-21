@@ -260,7 +260,11 @@ These terms can provide insight into what the public is focusing on when they th
 
 We also included some broad search terms relating to the effects and response to the pandemic (Table 3). With regards to reopening, referring to ending statewide lockdowns across the country, users fall more on the negative side. Yet, public sentiment relating to the economy was much more positive. This is interesting, as the recent decline in economy as a whole was strongly related to the lockdowns taking place. The term “school” was included because many schools and universities across the nation were closed due to the outbreak. The timing of the query also likely boosted sentiment scores, as many semesters have just ended or are about to end. The last two terms were chosen to try and capture the public’s views on the future. The term “summer” was chosen to represent a short-term outlook on the future, while the term “future” is to represent a long-term outlook. Interestingly, users’ short-term outlook is quite bleak, yet their long term optimism is greater. Note that these terms do not pull tweets that necessarily relate to the coronavirus.
 
-(table 3)
+|  |Reopen|Economy|School|Summer|Future|
+|--|--|--|--|--|--|
+|Aggregate Sentiment Score|-9%|20%|41%|-20%|11%|
+**Table 3:** This table shows the aggregate sentiment scores for various topics relating to the effects and responses to the coronavirus pandemic. Scores are given on a scale from -100% to +100%
+
 
 Another interesting application of this model was to compare the aggregate sentiment scores of key politicians in the United States government. Table 4 highlights the scores of ranking members in each political party.
 
