@@ -88,9 +88,12 @@ messages_tfidf = tfidf_transformer.transform(bow_matrix)
 
 The following figure gives a visual representation of how these modules manipulate the data to prepare it for a classical estimator.
 
+
 ![explanation of tfidf vectorizer](figures/tfidfvectorizer_explain.png)
+
 **Figure 1:** The above figure shows how `CountVectorizer` and `TfidfTransformer` convert a collection of words into a bag-of-words tf-idf matrix.
 
+</br>
 Finally, we will use `MultinomialNB` to train the tf-idf vectors with a Naive-Bayes classifier. This will be the final model that is used to classify tweet sentiment.
 ```
 model = MultinomialNB().fit(messages_tfidf)
@@ -186,12 +189,17 @@ Before exploring the best model further, let us unpack the performance of each e
 
 The Naive Bayes estimator produced the third best results, with a cross validation accuracy of 74.14%. Unlike the SVC, this model computed roughly 20% quicker than the SGD model. The fastest estimator, the Perceptron, was also the worst performer. However, it is still noteworthy that the Perceptron was able to classify tweets with 70% accuracy, which is a decent score. The Random Forest model was the most computationally expensive model, yet fell in the middle of the pack in terms of accuracy.
 
+
 ![model performance for each estimator (by accuracy)](figures/estimator_performance.png)
+
 **Figure 2:** This bar chart displays the cross validation accuracy of the *best* model for each estimator. Note that a different number of models were tested for each estimator, depending on the number of hyperparameters that were tuned. The above plot only displays the best accuracy, not the average accuracy.
 
+
 ![model performance on each estimator (by computational time)](figures/estimator_time.png)
+
 **Figure 3:** This bar chart displays the computing time for the *best* model of each estimator, as defined in Figure 2. 
 
+</br>
 Across all models, a total of 132 hyperparameter combinations were tested. Including 10-fold cross validation on each permutation, this comes out to 1,320 models. This took roughly 7.5 minutes to run using Google Colab’s servers. Brief testing on other hardware showed signs that it may take much longer elsewhere. Appendix A details the hyperparameter values tested for each object in the `Pipeline`.
 
 Overall, the model had very strong results. During cross-validation, the training set is split into multiple *folds*. The model is trained on all but one of those folds, and tested on the remaining fold. This yields the *cross validation accuracy* for classifying individual tweets. The best model utilized Stochastic Gradient Descent (SGD) as its estimator, and was able to achieve a cross validation accuracy of 75.99% (Table 1). We define the *test set accuracy* as the accuracy on tweets that have never before been seen by the model. These tweets were held out entirely during the model training and selection process. The test accuracy of the best model was 77.94%. These are exceptionally high values, considering that nearly 10 - 30% of all tweets have arbitrary sentiments. Any accuracy that is much higher would raise red flags as to whether this model is overfitting the noise in the training set.
@@ -199,13 +207,18 @@ Overall, the model had very strong results. During cross-validation, the trainin
 |Cross validation accuracy|Test set accuracy|
 |--|--|
 |75.99%|77.94%|
+
 **Table 1:** This table shows the accuracies of the best model on the cross validation folds and on the test set.
 
-
+</br>
 We can examine the accuracy of the model more closely by plotting the receiver operating characteristic (ROC) curve for each sentiment. The ROC curve of a model illustrates the relationship between its threshold for classification and its classification performance. This is done by plotting the true positive rate against the false negative rate at different thresholds. Curves closer to the top-left corner of the plane signal that a model can correctly classify most of the tweets of a certain sentiment, without falsely classifying tweets of other sentiments as such. The area under the curve (AUC) is a numerical quantity used to measure ROC curves. As visible in the Figure 4, the ROC curves of each sentiment hug the top-left corner quite nicely. While not all curves follow the exact same path, their AUC values are quite similar; this implies the model is good at predicting each sentiment and is not over-trained to recognize one of them and under-trained in recognizing another.
+
+
 ![roc curve of each sentiment](figures/roc.png)
+
 **Figure 4:** The ROC curve plots the true positive rate against the false negative rate at various thresholds for each sentiment. The dashed black line is the no-discrimination line, which can be interpreted as a classifying tweets at random using no methodology.
 
+</br>
 We used this model on our three benchmark tweets to examine the behavior of the model when classifying tweets. Table 2 contains the model’s sentiment predictions.
 
 |Tweet|Negative probability|Neutral probability|Positive probability|
@@ -213,9 +226,10 @@ We used this model on our three benchmark tweets to examine the behavior of the 
 |I love the world|0%|0%|100%|
 |I hate the world|100%|0%|0%|
 |I am indifferent about the world|16.7%|81.1%|2.3%|
+
 **Table 2:** This table shows the conditional probabilities of each tweet being assigned a specific sentiment. The sentiment with the highest probability is chosen as the classification by the model. 
 
-
+</br>
 The first and second tweets are objective. The model is able to predict with extreme confidence that the tweets are positive and negative, respectively. As we mentioned previously, however, the third tweet is much more subjective. While it lies directly in between the first two, it may also carry a slightly more negative tone. We see this in our model too, as it predicts *neutral* as the most likely sentiment, but also notes that there is a decent chance the tweet is *negative*. These were hand-picked tweets that are used only as a proof-of-concept and a benchmark that any good model should be able to pass. 
 
 Moving forward, we can now measure this model’s ability to predict aggregate sentiment scores on large collections of tweets. We took 1,000 bootstrapped samples from our test set and computed the aggregate sentiment score of each. The aggregate score is simply the average of each sentiment score in the collection of tweets, normalized to a -1 to 1 scale. A score of -1 means all tweets are negative; a score of 0 means either all tweets are neutral or there are an equal number of negative and positive tweets; a score of 1 means that all tweets are positive. As each tweet is given a score of 0, 2, or 4, the aggregate score is computed using the following formula:
@@ -223,11 +237,18 @@ Moving forward, we can now measure this model’s ability to predict aggregate s
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;S_{agg}=\frac{ \sum\limits_{t \epsilon T}{S(t)-2}}{2 |T|}" title="eqn" />
 
 where T is a collection of tweets and S is a function that returns the sentiment score of an individual tweet. These aggregate scores can be compared to the known aggregate scores of each bootstrapped sample, as the individual tweets have known sentiments. Because these bootstrapped samples come from our test set, this can provide a reliable measure of the uncertainty in the model’s aggregate score predictions. These tweets were never seen by the model during training and tuning, and thus the model has no bias towards them. As seen in Figure 5, the aggregate score residuals were well behaved, with a roughly normal distribution centered at 0.004, which is close enough to zero for our purposes. The standard deviation was 0.0247, which means that the model’s aggregate sentiment scores can be accepted with 95% confidence at ± 0.05 the predicted value. Note that the scale for aggregate scores is -1 to 1, meaning that this interval is equivalent to ± 2.5%.
+
+
 ![sentiment score prediction error](figures/agg_error_hist.png)
+
 **Figure 5:** This histogram shows the distribution of the residuals for the model’s aggregate sentiment score of 1,000 bootstrapped *test* samples. Note that the trained model has never seen these tweets before.
 
+</br>
 Lastly, we built in the ability to generate word clouds of any text into this model. Users can either create a word cloud of the entire sample, or of only one sentiment. As sentiments are not known ahead of time for most tweet collections, our model will first predict the sentiment of each tweet, and then plot the most important words; here, *important* means words with the largerd tf-idf weight. By observing the word clouds, one can see which are the most important words being used to describe a topic in a specific context. For example, Figure 6 displays the word clouds generated from the training data.
+
+
 ![word clouds for training data](figures/wc_train_all3.png)
+
 **Figure 6:** The above word clouds show the most important words or phrases for classifying each sentiment (*negative*, *neutral*, *positive*, from left to right).
 
 ---
@@ -253,18 +274,25 @@ By examining the word cloud (Figure 7) for the entire collection (not just a sin
 * Health
 
 These terms can provide insight into what the public is focusing on when they think of the coronavirus.
+
+
 ![coronavirus word cloud](figures/wc_corona.png)
+
 **Figure 7:** This word cloud shows the most important terms related to the entire “coronavirus” collection. They are not specific to one sentiment.
 
+</br>
 We also included some broad search terms relating to the effects and response to the pandemic (Table 3). With regards to reopening, referring to ending statewide lockdowns across the country, users fall more on the negative side. Yet, public sentiment relating to the economy was much more positive. This is interesting, as the recent decline in economy as a whole was strongly related to the lockdowns taking place. The term “school” was included because many schools and universities across the nation were closed due to the outbreak. The timing of the query also likely boosted sentiment scores, as many semesters have just ended or are about to end. The last two terms were chosen to try and capture the public’s views on the future. The term “summer” was chosen to represent a short-term outlook on the future, while the term “future” is to represent a long-term outlook. Interestingly, users’ short-term outlook is quite bleak, yet their long term optimism is greater. Note that these terms do not pull tweets that necessarily relate to the coronavirus.
+
 
 |  |Reopen|Economy|School|Summer|Future|
 |--|--|--|--|--|--|
 |Aggregate Sentiment Score|-9%|20%|41%|-20%|11%|
+
 **Table 3:** This table shows the aggregate sentiment scores for various topics relating to the effects and responses to the coronavirus pandemic. Scores are given on a scale from -100% to +100%
 
-
+</br>
 Another interesting application of this model was to compare the aggregate sentiment scores of key politicians in the United States government. Table 4 highlights the scores of ranking members in each political party.
+
 
 |Search term|Agg. Score (excluding retweets)|Agg. Score (including retweets)
 |--|--|--|
@@ -275,8 +303,10 @@ Another interesting application of this model was to compare the aggregate senti
 |(Barack) Obama|19%|28%|
 |Republicans|-4%|4%|
 |Democrats|-3%|0%|
+
 **Table 4:** This table shows the aggregate sentiment scores for various high ranking government officials. Scores are given on a scale from -100% to +100%.
 
+</br>
 This search first points out a peculiar phenomenon. For each term, roughly 2,000 tweets were collected. The first 1,000 tweets are all unique; i.e., all retweets were excluded. The second 1,000 tweets *did* contain retweets and were thus not all unique. It is noteworthy that for nearly all search terms, the aggregated sentiment score was higher for the collection of tweets that contained retweets. This would suggest that Twitter users tend to retweet positive opinions more so than negative ones.
 
 By comparing the actual scores, we can see that the two presumptive Presidential nominees Donald Trump and Joe Biden have relatively similar numbers. House Speaker Nancy Pelosi (D-CA) is very unpopular on Twitter, with one of the lowest scores seen in any topic discussed in this paper. However, she benefited strongly from positive retweets. Senate Majority Leader Mitch McConnell is much less polarizing, with scores almost exactly neutral. Users are tweeting more positively about former President Barack Obama than any other political member. On a broad note, we also compared the terms “Republicans” and “Democrats”. The only takeaway is that Republicans received a larger boost from positive retweets than Democrats.
@@ -285,10 +315,12 @@ We also searched different company names, with the thought that maybe companies 
 
 On a similar note, we compared different cryptocurrency search results to see how they compared to one another (Table 5). As cryptocurrency tokens are entirely digital and do not represent any underlying asset, unlike shares of a company, their price is entirely determined by public sentiment and if the trading community sees any value in them.  The overall term “cryptocurrency” had a more positive score than either “Bitcoin” or “Ethereum”, which are the two leading tokens by market capitalization. Ripple, the #3 token, had the highest score by a large margin at +55%. However, there have not been any significant spikes in the price of XRP, the token backed by Ripple. As a benchmark, the US dollar was also included in this search, and was found to have relatively neutral scores as well.
 
+
 | |Cryptocurrency|Bitcoin|Ethereum|Ripple|USD|
 |--|--|--|--|--|--|
 |Aggregate Sentiment Score|11%|1%|4%|55%|5%|
+
 **Table 5:** This table shows the aggregate sentiment scores for the top cryptocurrency tokens by market capitalization, as well as the US dollar for comparison. Scores are given on a scale from -100% to +100%.
 
-
+</br>
 Overall, we believe this project was a success. We were able to create a machine learning model that can classify tweets as *negative*, *neutral*, or *positive* with a high accuracy; likewise, the model is very accurate at computing aggregate sentiment scores for large collections of tweets. The largest recommendation for future projects is to compare this model to actual humans. If a group of humans were given a set of tweets and asked to classify them, how consistent would they be? How “accurate” would they be compared to the model? Exploring this further could provide more evidence that this model is successful, or perhaps humble the results some.
