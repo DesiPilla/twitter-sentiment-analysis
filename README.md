@@ -90,7 +90,8 @@ Finally, we will use `MultinomialNB` to train the tf-idf vectors with a Naive-Ba
 model = MultinomialNB().fit(messages_tfidf)
 ```
 The following figure gives a visual representation of how these modules manipulate the data to prepare it for a classical estimator.
-![](figures/tfidifvectorizer_explain.png>)
+
+![explanation of tfidf vectorizer](figures/tfidfvectorizer_explain.png)
 
 ---
 
