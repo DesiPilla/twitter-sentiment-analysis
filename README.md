@@ -220,9 +220,7 @@ The first and second tweets are objective. The model is able to predict with ext
 
 Moving forward, we can now measure this model’s ability to predict aggregate sentiment scores on large collections of tweets. We took 1,000 bootstrapped samples from our test set and computed the aggregate sentiment score of each. The aggregate score is simply the average of each sentiment score in the collection of tweets, normalized to a -1 to 1 scale. A score of -1 means all tweets are negative; a score of 0 means either all tweets are neutral or there are an equal number of negative and positive tweets; a score of 1 means that all tweets are positive. As each tweet is given a score of 0, 2, or 4, the aggregate score is computed using the following formula:
 
-
-(formula)
-
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;S_{agg}=\frac{ \sum\limits_{t \epsilon T}{S(t)-2}}{2 |T|}" title="eqn" />
 
 where T is a collection of tweets and S is a function that returns the sentiment score of an individual tweet. These aggregate scores can be compared to the known aggregate scores of each bootstrapped sample, as the individual tweets have known sentiments. Because these bootstrapped samples come from our test set, this can provide a reliable measure of the uncertainty in the model’s aggregate score predictions. These tweets were never seen by the model during training and tuning, and thus the model has no bias towards them. As seen in Figure 5, the aggregate score residuals were well behaved, with a roughly normal distribution centered at 0.004, which is close enough to zero for our purposes. The standard deviation was 0.0247, which means that the model’s aggregate sentiment scores can be accepted with 95% confidence at ± 0.05 the predicted value. Note that the scale for aggregate scores is -1 to 1, meaning that this interval is equivalent to ± 2.5%.
 ![sentiment score prediction error](figures/agg_error_hist.png)
@@ -287,7 +285,10 @@ We also searched different company names, with the thought that maybe companies 
 
 On a similar note, we compared different cryptocurrency search results to see how they compared to one another (Table 5). As cryptocurrency tokens are entirely digital and do not represent any underlying asset, unlike shares of a company, their price is entirely determined by public sentiment and if the trading community sees any value in them.  The overall term “cryptocurrency” had a more positive score than either “Bitcoin” or “Ethereum”, which are the two leading tokens by market capitalization. Ripple, the #3 token, had the highest score by a large margin at +55%. However, there have not been any significant spikes in the price of XRP, the token backed by Ripple. As a benchmark, the US dollar was also included in this search, and was found to have relatively neutral scores as well.
 
+| |Cryptocurrency|Bitcoin|Ethereum|Ripple|USD|
+|--|--|--|--|--|--|
+|Aggregate Sentiment Score|11%|1%|4%|55%|5%|
+**Table 5:** This table shows the aggregate sentiment scores for the top cryptocurrency tokens by market capitalization, as well as the US dollar for comparison. Scores are given on a scale from -100% to +100%.
 
-(table 6)
 
 Overall, we believe this project was a success. We were able to create a machine learning model that can classify tweets as *negative*, *neutral*, or *positive* with a high accuracy; likewise, the model is very accurate at computing aggregate sentiment scores for large collections of tweets. The largest recommendation for future projects is to compare this model to actual humans. If a group of humans were given a set of tweets and asked to classify them, how consistent would they be? How “accurate” would they be compared to the model? Exploring this further could provide more evidence that this model is successful, or perhaps humble the results some.
