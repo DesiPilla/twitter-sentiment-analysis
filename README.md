@@ -196,8 +196,10 @@ Across all models, a total of 132 hyperparameter combinations were tested. Inclu
 
 Overall, the model had very strong results. During cross-validation, the training set is split into multiple *folds*. The model is trained on all but one of those folds, and tested on the remaining fold. This yields the *cross validation accuracy* for classifying individual tweets. The best model utilized Stochastic Gradient Descent (SGD) as its estimator, and was able to achieve a cross validation accuracy of 75.99% (Table 1). We define the *test set accuracy* as the accuracy on tweets that have never before been seen by the model. These tweets were held out entirely during the model training and selection process. The test accuracy of the best model was 77.94%. These are exceptionally high values, considering that nearly 10 - 30% of all tweets have arbitrary sentiments. Any accuracy that is much higher would raise red flags as to whether this model is overfitting the noise in the training set.
 
-
-(table 1)
+|Cross validation accuracy|Test set accuracy|
+|--|--|
+|75.99%|77.94%|
+**Table 1:** This table shows the accuracies of the best model on the cross validation folds and on the test set.
 
 
 We can examine the accuracy of the model more closely by plotting the receiver operating characteristic (ROC) curve for each sentiment. The ROC curve of a model illustrates the relationship between its threshold for classification and its classification performance. This is done by plotting the true positive rate against the false negative rate at different thresholds. Curves closer to the top-left corner of the plane signal that a model can correctly classify most of the tweets of a certain sentiment, without falsely classifying tweets of other sentiments as such. The area under the curve (AUC) is a numerical quantity used to measure ROC curves. As visible in the Figure 4, the ROC curves of each sentiment hug the top-left corner quite nicely. While not all curves follow the exact same path, their AUC values are quite similar; this implies the model is good at predicting each sentiment and is not over-trained to recognize one of them and under-trained in recognizing another.
