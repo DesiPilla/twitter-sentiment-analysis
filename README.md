@@ -85,45 +85,34 @@ tfidf_transformer = TfidfTransformer()
 tfdif.fit(bow_matrix)
 messages_tfidf = tfidf_transformer.transform(bow_matrix)
 ```
+
+The following figure gives a visual representation of how these modules manipulate the data to prepare it for a classical estimator.
+
+![explanation of tfidf vectorizer](figures/tfidfvectorizer_explain.png)
+
 Finally, we will use `MultinomialNB` to train the tf-idf vectors with a Naive-Bayes classifier. This will be the final model that is used to classify tweet sentiment.
 ```
 model = MultinomialNB().fit(messages_tfidf)
 ```
-The following figure gives a visual representation of how these modules manipulate the data to prepare it for a classical estimator.
-
-![explanation of tfidf vectorizer](figures/tfidfvectorizer_explain.png)
 
 ---
 
 
 ## Streamlined Methodology
 
-Notice in the previous methodology that the three estimators (`CountVectorizer`, `TfidfTransformer`, and `MultinomialNB`) are used almost identically. Each estimator is instantiated, fit with the most recent estimator, and then transformed (except for the final estimator, which need only be trained). This process can be streamlined by using the `Pipeline` object. This object will conduct a series of fits and transforms. The code below will replicate the desired executions:
- * fit a `CountVectorizer` to the training set and transform it
- * fit a `TfidfTransformer` to the previous estimator and transform it
- * fit a `MultinomialNB` to the previous estimator
+The ```TfidfVectorizer``` is a module which is equivalent to ```CountVectorizer``` followed by ```TfidfTransformer```. This will convert raw text into a tf-idf matrix. Rather than have two separate objects, we can combine them into one.
+
+This entire process can be further streamlined by using the ```Pipeline object```. This object will conduct a series of fits and transforms. On different estimators. By setting up our Pipeline to first fit a ```TfidfVectorizer``` to our training data and then fit a ```MultinomialNB``` to the result, we have fully replicated our process in only one object. This will become extremely helpful when tuning our model.
 
 ```
 pipeline = Pipeline([
-        ('bow', CountVectorizer(lowercase=True, 
+        ('bow', TfidfVectorizer(lowercase=True, 
                                 strip_accents='ascii',
                                 stop_words='english')),
-        ('tfidf', TfidfTransformer()),
         ('classifier', MultinomialNB()),
         ])
 ```
 The first element of each tuple passed into the `Pipeline` is the name of the estimator. The second element of each tuple is the estimator itself, instantiated with any non-changing arguments.
-
-Furthermore, the `TfidfVectorizer` is a module which is equivalent to `CountVectorizer` followed by `TfidfTransformer`. Rather than have two separate objects, we can combine them into one. This will convert raw text into a tf-idf matrix. The new Pipeline would look like
-
-```
-pipeline = Pipeline([
-        ('tfidf', TfidfVectorizer(lowercase=True, 
-                                strip_accents='ascii',
-                                stop_words='english')),
-        ('classifier', MultinomialNB()),
-        ])
-```
 
 ---
 
