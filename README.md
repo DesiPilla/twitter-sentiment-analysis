@@ -55,9 +55,10 @@ This person begins by saying something positive, but then ends it negatively. Ov
 
 # Problem Statement
 
-In this project, we aim to create a machine learning model that is able to accurately classify the sentiment of a tweet. "Accuracy" for this model will be defined not only by its ability to correctly classify individual tweets, but also its ability to correctly classify large quantities of tweets to create an *aggregated sentiment score*. 
+We aim to create a machine learning model that is able to accurately classify the sentiment of a tweet. "Accuracy" for this model will be defined not only by its ability to correctly classify individual tweets, but also its ability to correctly classify large quantities of tweets to create an *aggregated sentiment score*. 
 
 Though the accuracy of the model on individual tweets will be limited by the subjective nature of this application, we believe it is reasonable to achieve very accurate aggregate scores. Once a model has been created, trained, and validated, we intend to use it on real-time and historical tweets to collect aggregated sentiment scores for varying topics. These can be used to compare real-time responses and attitudes towards different subjects.
+
 
 # Overall Methodology
 
@@ -88,6 +89,9 @@ Finally, we will use `MultinomialNB` to train the tf-idf vectors with a Naive-Ba
 ```
 model = MultinomialNB().fit(messages_tfidf)
 ```
+The following figure gives a visual representation of how these modules manipulate the data to prepare it for a classical estimator.
+![](figures/tfidifvectorizer_explain.png>)
+
 ---
 
 
