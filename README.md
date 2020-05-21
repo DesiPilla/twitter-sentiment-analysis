@@ -208,9 +208,12 @@ We can examine the accuracy of the model more closely by plotting the receiver o
 
 We used this model on our three benchmark tweets to examine the behavior of the model when classifying tweets. Table 2 contains the model’s sentiment predictions.
 
-
-
-(table 2)
+|Tweet|Negative probability|Neutral probability|Positive probability|
+|--|--|--|--|
+|I love the world|0%|0%|100%|
+|I hate the world|100%|0%|0%|
+|I am indifferent about the world|16.7%|81.1%|2.3%|
+**Table 2:** This table shows the conditional probabilities of each tweet being assigned a specific sentiment. The sentiment with the highest probability is chosen as the classification by the model. 
 
 
 The first and second tweets are objective. The model is able to predict with extreme confidence that the tweets are positive and negative, respectively. As we mentioned previously, however, the third tweet is much more subjective. While it lies directly in between the first two, it may also carry a slightly more negative tone. We see this in our model too, as it predicts *neutral* as the most likely sentiment, but also notes that there is a decent chance the tweet is *negative*. These were hand-picked tweets that are used only as a proof-of-concept and a benchmark that any good model should be able to pass. 
